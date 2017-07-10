@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ZenTest (4.11.1)
     activemodel (5.1.2)
       activesupport (= 5.1.2)
     activerecord (5.1.2)
@@ -39,7 +40,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ZenTest
   activerecord
+  minitest
   pg
   rake
   sinatra
