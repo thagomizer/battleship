@@ -3,7 +3,7 @@ require 'minitest/autorun'
 
 class TestClient < Minitest::Test
   def test_initialize
-    c = Client.new("gameID")
+    c = Client.new("gameID", [[:battleship, 5]])
 
     assert_equal "gameID", c.game_id
 
