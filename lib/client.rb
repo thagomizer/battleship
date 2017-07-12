@@ -12,6 +12,13 @@ class Client
     self.my_board    = Board.new
     self.their_board = Board.new
   end
+
+  def place_ships
+    self.fleet.each do |name, length|
+      place_ship name, length
+    end
+  end
+
   def place_ship name, length
     loop do
       dir = DIRECTIONS.sample
