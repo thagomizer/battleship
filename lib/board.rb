@@ -7,11 +7,11 @@ class Board
     @board  = Hash.new(".")
   end
 
-  def get_cell location
+  def [] location
     @board[location]
   end
 
-  def set_cell location, value
+  def []= location, value
     @board[location] = value
   end
 
@@ -21,5 +21,16 @@ class Board
 
   def miss? location
     @board[location] == "."
+  end
+
+  def to_s
+    str = ""
+
+    str = ('A'..'J').map { |l|
+      (1..10).map { |n| @board["#{l}#{n}"][0] }.join
+    }.join("\n")
+    str << "\n"
+
+    str
   end
 end
