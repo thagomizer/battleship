@@ -11,12 +11,27 @@ class TestBoard < Minitest::Test
     assert_equal ".", b["C7"]
   end
 
-  def test_set_cell
+  def test_accessing_cell
     b = Board.new
 
     b["B7"] = :submarine
 
     assert_equal :submarine, b["B7"]
+  end
+
+  def test_in_range?
+    b = Board.new
+
+    assert b.in_range?("B7")
+    assert b.in_range?("A1")
+    assert b.in_range?("A10")
+    assert b.in_range?("J1")
+    assert b.in_range?("J10")
+    refute b.in_range?("X7")
+    refute b.in_range?("B0")
+    refute b.in_range?("B11")
+    refute b.in_range?("")
+    refute b.in_range?("142342")
   end
 
   def test_hit?
