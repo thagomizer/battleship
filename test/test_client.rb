@@ -6,10 +6,18 @@ class TestClient < Minitest::Test
     c = Client.new("gameID", [[:battleship, 5]])
 
     assert_equal "gameID", c.game_id
+    assert_equal [[:battleship, 5]], c.fleet
 
     assert c.my_board
     assert c.their_board
   end
 
+  def test_place_ship
+    c = Client.new("gameID", [])
+
+    c.place_ship :cruiser, 3
+
+    assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "c" }
+  end
 
 end
