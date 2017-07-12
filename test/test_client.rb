@@ -35,4 +35,12 @@ class TestClient < Minitest::Test
     assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "f" }
     assert_equal 2, c.my_board.to_s.each_char.count { |l| l == "d" }
   end
+
+  def test_guess
+    c = Client.new()
+
+    g = c.guess
+
+    assert c.their_board.in_range?(g)
+  end
 end
