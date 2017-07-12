@@ -21,11 +21,18 @@ class TestClient < Minitest::Test
   end
 
   def test_place_ships
-    c = Client.new("gameID", [[:battleship, 5], [:cruiser, 3]])
+    c = Client.new("gameID", [[:battleship, 5],
+                              [:cruiser, 4],
+                              [:submarine, 3],
+                              [:frigate, 3],
+                              [:destroyer, 2]])
 
     c.place_ships
 
     assert_equal 5, c.my_board.to_s.each_char.count { |l| l == "b" }
-    assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "c" }
+    assert_equal 4, c.my_board.to_s.each_char.count { |l| l == "c" }
+    assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "s" }
+    assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "f" }
+    assert_equal 2, c.my_board.to_s.each_char.count { |l| l == "d" }
   end
 end

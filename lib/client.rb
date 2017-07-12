@@ -42,7 +42,7 @@ class Client
         end
       end
 
-      if locations.all? { |l| self.my_board.in_range?(l) }
+      if locations.all? { |l| @my_board.in_range?(l) and @my_board.miss?(l) }
         locations.each do |l|
           self.my_board[l] = name
         end
