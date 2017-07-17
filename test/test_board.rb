@@ -47,6 +47,16 @@ class TestBoard < Minitest::Test
     refute b.in_range?("142342")
   end
 
+  def test_empty?
+    b = Board.new
+
+    assert b.empty?("F7")
+
+    b["F7"] = :submarine
+
+    refute b.empty?("F7")
+  end
+
   def test_hit?
     b = Board.new
 

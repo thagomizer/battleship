@@ -45,9 +45,11 @@ class Board
     @board[location] != "."
   end
 
-  def miss? location
+  def empty? location
     @board[location] == "."
   end
+
+  alias_method :miss?, :empty?
 
   def to_s
     str = ""

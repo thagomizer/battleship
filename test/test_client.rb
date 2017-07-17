@@ -56,4 +56,19 @@ class TestClient < Minitest::Test
 
     assert c.their_board.in_range?(g)
   end
+
+  def test_process_move
+    c = Client.new("gameID", [[:destroyer, 2]])
+
+    c.my_board["A7"] = :destroyer
+    c.my_board["A8"] = :destroyer
+
+    assert_equal false, c.process_move("F3")[:hit]
+    assert_equal true,  c.process_move("A7")[:hit]
+
+    # assert_equal {:hit => false}, c.process_move("F3")
+    # assert_equal {:hit => true}, c.process_move("A7")
+    # assert_equal {:hit => true,
+    #               :sunk => :destroyer}, c.process_move("A8")
+  end
 end

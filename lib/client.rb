@@ -65,6 +65,10 @@ class Client
   end
 
   def guess
-    "#{LETTERS.sample}#{Random.rand(10)}"
+    "#{LETTERS.sample}#{Random.rand(10) + 1}"
+  end
+
+  def process_move move
+    {:hit => @my_board.hit?(move)}
   end
 end
