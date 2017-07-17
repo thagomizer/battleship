@@ -27,9 +27,8 @@ class Client
   end
 
   def place_ships
-    self.fleet.each do |name, length|
-      place_ship name, length
-    end
+    self.fleet.map! { |name, length| [name, length, place_ship(name, length)] }
+
   end
 
   def place_ship name, length
@@ -55,11 +54,12 @@ class Client
         end
       end
 
-      if locations.all? { |l| @my_board.in_range?(l) and @my_board.miss?(l) }
+      if locations.all? { |l| @my_board.in_range?(l) and @my_board. miss?(l) }
         locations.each do |l|
           self.my_board[l] = name
         end
-        return
+
+        return locations
       end
     end
   end
@@ -69,6 +69,16 @@ class Client
   end
 
   def process_move move
-    {:hit => @my_board.hit?(move)}
+    results = { :hit => false }
+
+    self.fleet.each do |ship, _, locations|
+      if locations.include?(move)
+        results[:hit] = true
+        locations.delete(move)
+        results[:sunk] = ship if locations.empty?
+      end
+    end
+
+    results
   end
 end
