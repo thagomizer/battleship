@@ -27,11 +27,16 @@ class TestClient < Minitest::Test
   end
 
   def test_place_ship
-    c = Client.new("gameID", [])
+    c = Client.new("gameID", [[:cruiser, 3]])
 
-    c.place_ship :cruiser, 3
+    locations = c.place_ship :cruiser, 3
+    assert_equal 3, locations.length
 
     assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "c" }
+
+    locations.each do |l|
+      assert_equal :cruiser, c.my_board[l]
+    end
   end
 
   def test_place_ships
@@ -48,6 +53,14 @@ class TestClient < Minitest::Test
     assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "s" }
     assert_equal 3, c.my_board.to_s.each_char.count { |l| l == "f" }
     assert_equal 2, c.my_board.to_s.each_char.count { |l| l == "d" }
+
+    c.fleet.each do |name, len, locations|
+      assert_equal len, locations.length
+
+      locations.each do |l|
+        assert_equal name, c.my_board[l]
+      end
+    end
   end
 
   def test_guess
@@ -60,9 +73,6 @@ class TestClient < Minitest::Test
 
   def test_process_move
     c = Client.new("gameID", [[:destroyer, 2, ["A7", "A8"]]])
-
-    c.my_board["A7"] = :destroyer
-    c.my_board["A8"] = :destroyer
 
     assert_equal false, c.process_move("F3")[:hit]
 

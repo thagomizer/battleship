@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'board'
+require_relative 'board'
 
 class Client
   DIRECTIONS = [:up, :down, :left, :right]
@@ -21,14 +21,13 @@ class Client
 
   def initialize game_id = "", fleet = []
     self.game_id     = game_id
-    self.fleet       = fleet
+    self.fleet       = fleet.dup
     self.my_board    = Board.new
     self.their_board = Board.new
   end
 
   def place_ships
     self.fleet.map! { |name, length| [name, length, place_ship(name, length)] }
-
   end
 
   def place_ship name, length
@@ -54,7 +53,7 @@ class Client
         end
       end
 
-      if locations.all? { |l| @my_board.in_range?(l) and @my_board. miss?(l) }
+      if locations.all? { |l| @my_board.in_range?(l) and @my_board.miss?(l) }
         locations.each do |l|
           self.my_board[l] = name
         end
@@ -72,10 +71,12 @@ class Client
     results = { :hit => false }
 
     self.fleet.each do |ship, _, locations|
-      if locations.include?(move)
+      i = locations.index(move)
+
+      if i
         results[:hit] = true
-        locations.delete(move)
-        results[:sunk] = ship if locations.empty?
+        locations[i] = :hit
+        results[:sunk] = ship if locations.all? { |l| l == :hit }
       end
     end
 
@@ -83,6 +84,6 @@ class Client
   end
 
   def lost?
-    self.fleet.all? { |ship, _, locations| locations.empty? }
+    self.fleet.all? { |ship, _, locations| locations.all? { |l| l == :hit}}
   end
 end
