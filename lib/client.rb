@@ -81,4 +81,8 @@ class Client
 
     results
   end
+
+  def lost?
+    self.fleet.all? { |ship, _, locations| locations.empty? }
+  end
 end

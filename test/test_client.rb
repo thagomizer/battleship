@@ -72,4 +72,13 @@ class TestClient < Minitest::Test
 
     assert_equal expected, c.process_move("A8")
   end
+
+  def test_lost?
+    c = Client.new("gameID", [[:destroyer, 2, ["A7", "A8"]]])
+
+    c.process_move("A7")
+    c.process_move("A8")
+
+    assert c.lost?
+  end
 end
