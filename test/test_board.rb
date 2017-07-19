@@ -81,8 +81,9 @@ class TestBoard < Minitest::Test
   def test_to_s
     b = Board.new
 
-    expected = ""
-    10.times do
+    expected = " 1234567890\n"
+    10.times do |i|
+      expected << Board::LETTERS[i]
       expected << "..........\n"
     end
 

@@ -63,10 +63,10 @@ class Board
       end
     end
 
-    str = ""
+    str = " 1234567890\n"
 
-    str = LETTERS.map { |l|
-      NUMBERS.map { |n| inverted["#{l}#{n}"][0] }.join
+    str += LETTERS.map { |l|
+      l + NUMBERS.map { |n| inverted["#{l}#{n}"][0] }.join
     }.join("\n")
     str << "\n"
 
