@@ -12,6 +12,7 @@
 # limitations under the License.
 
 require 'securerandom'
+require 'irb'
 require_relative 'client'
 
 class Game
@@ -20,7 +21,7 @@ class Game
            [:submarine,  3],
            [:frigate,    3],
            [:destroyer,  2]]
-
+  SMALL_FLEET = [[:cruiser, 4]]
 
   attr_accessor :id, :client_a, :client_b
 
@@ -34,14 +35,32 @@ class Game
     @client_a.place_ships
     @client_b.place_ships
 
+    puts "Client A Board"
+    puts @client_a.my_board
+    puts
+
+    puts "Client B Board"
+    puts @client_b.my_board
+    puts
+
     loop do
       g = @client_a.guess
-      _ = @client_b.process_guess
+      r = @client_b.process_move g
+      puts "A #{g}: B #{r}"
 
-      break if @client_a.lost? or @client_b.lost?
+      if @client_b.lost?
+        puts "B Lost"
+        break
+      end
 
       g = @client_b.guess
-      _ = @client_a.process_guess
+      r = @client_a.process_move g
+      puts "B: #{g} A: #{r}"
+
+      if @client_a.lost?
+        puts "A Lost"
+        break
+      end
     end
   end
 end
