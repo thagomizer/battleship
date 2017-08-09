@@ -15,6 +15,7 @@
 ENV["RACK_ENV"] = "test"
 require "minitest/autorun"
 require "rack/test"
+require "pp"
 
 require File.expand_path "../../server.rb", __FILE__
 
@@ -62,6 +63,8 @@ class ServerTest < MiniTest::Unit::TestCase
     # Validate the response
     data = JSON.parse(last_response.body)
 
+pp data
+flunk
     assert_equal g, data["game_id"]
     refute data["response"]["hit"]
     refute data["response"]["sunk"]

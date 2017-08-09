@@ -72,4 +72,16 @@ class Board
 
     str
   end
+
+  def marshal_dump
+    @board.to_a
+  end
+
+  def marshal_load data
+    @board  = Hash.new { |h, k| h[k] = [] }
+
+    data.each do |location, value|
+      @board[location] = value
+    end
+  end
 end

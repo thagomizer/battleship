@@ -91,4 +91,18 @@ class TestClient < Minitest::Test
 
     assert c.lost?
   end
+
+  def test_marshalling
+    c = Client.new("gameID", [[:battleship, 5]])
+    c.place_ships
+    c.process_move("F3")
+
+    dump = Marshal.dump c
+    c2 = Marshal.load dump
+
+    assert_equal c.game_id, c2.game_id
+    assert_equal c.fleet, c2.fleet
+    assert_equal c.my_board.to_s, c2.my_board.to_s
+    assert_equal c.their_board.to_s, c2.their_board.to_s
+  end
 end

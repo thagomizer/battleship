@@ -91,4 +91,14 @@ class TestBoard < Minitest::Test
 
     assert_equal expected, b.to_s
   end
+
+  def test_marshal
+    b = Board.new
+    b["F7"] = :submarine
+
+    dump = Marshal.dump b
+    b2 = Marshal.load dump
+
+    assert_equal :submarine, b2["F7"]
+  end
 end
