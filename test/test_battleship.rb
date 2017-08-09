@@ -17,11 +17,11 @@ require 'minitest/autorun'
 
 class TestBattleship < Minitest::Test
   def test_initialize
-    g = Battleship.new
+    b = Battleship.new
 
-    assert g.id
+    assert b.id
 
-    assert g.client_a
-    assert g.client_b
+    assert b.client_a
+    assert b.client_b
   end
 end
