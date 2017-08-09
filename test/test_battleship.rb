@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# require_relative '../lib/game'
-# require 'minitest/autorun'
+require_relative '../lib/battleship'
+require 'minitest/autorun'
 
-# class TestGame < Minitest::Test
-#   def test_initialize
-#     g = Game.new
+class TestBattleship < Minitest::Test
+  def test_initialize
+    g = Battleship.new
 
-#     assert g.id
+    assert g.id
 
-#     assert g.client_a
-#     assert g.client_b
-#   end
-# end
+    assert g.client_a
+    assert g.client_b
+  end
+end

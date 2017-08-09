@@ -15,7 +15,7 @@ require 'securerandom'
 require 'irb'
 require_relative 'client'
 
-class Game
+class Battleship
   FLEET = [[:battleship, 5],
            [:cruiser,    4],
            [:submarine,  3],
