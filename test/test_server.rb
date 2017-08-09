@@ -54,7 +54,7 @@ class ServerTest < MiniTest::Unit::TestCase
     body = {}
     body[:game_id] = g
     body[:response] = {}
-    body[:guess] = { guess: "A7" }
+    body[:guess] = { guess: "A7", turn_id: 0 }
 
     post("/turn", body.to_json, { "CONTENT_TYPE" => "application/json" })
 
@@ -63,13 +63,13 @@ class ServerTest < MiniTest::Unit::TestCase
     # Validate the response
     data = JSON.parse(last_response.body)
 
-pp data
-flunk
     assert_equal g, data["game_id"]
     refute data["response"]["hit"]
     refute data["response"]["sunk"]
+    assert_equal 0, data["response"]["turn_id"]
 
     refute data["guess"]["guess"].empty?
+    assert_equal 1, data["guess"]["turn_id"]
 
     # Validate the database
     assert_equal count + 1, Turn.count

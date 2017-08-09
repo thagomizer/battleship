@@ -15,6 +15,7 @@ require "sinatra"
 require "sinatra/activerecord"
 require_relative "models/game"
 require_relative "models/turn"
+require_relative "lib/client"
 
 get '/' do
   erb :index
@@ -22,8 +23,10 @@ end
 
 get '/new_game' do
   g = Game.create!
-  content_type :json
 
+  # Create a client, place_ships, and create turn 0
+
+  content_type :json
   { game_id: g.id }.to_json
 end
 
@@ -34,8 +37,10 @@ end
 #  params:
 #   { game_id: <id>,
 #     response: { hit: [true|false],
-#                 sunk: <ship name>},
-#     guess:    { guess: <A7 or B4> }}
+#                 sunk: <ship name>,
+#                 turn_id: i },
+#     guess:    { guess: <A7 or B4>,
+#                 turn_id: i + 1}}
 #
 #  response is the same format as the request params, both in json
 
@@ -58,18 +63,30 @@ post '/turn' do
   end
 
   # Process move, create a turn record for the client's turn
-  c.process_move params["guess"]["guess"]
+
+  response[:response] = c.process_move params["guess"]["guess"]
+  response[:response][:turn_id] = params["guess"]["turn_id"]
+
+  t = Turn.new
+  t.game_id = g.id
+  t.state = Marshal.dump(c)
+  t.body = params
+  t.turn_id = params["guess"]["turn_id"]
+  t.save!
 
   # Figure out your response, create a turn record to record it
-
+  guess = c.guess
+  t = Turn.new
+  t.game_id = g.id
+  t.state = Marshal.dump(c)
+  t.turn_id = params["guess"]["turn_id"] + 1
 
   # Send response
 
   response[:game_id] = g.id
 
-  response[:response] = ""
+  response[:guess] = { guess: guess, turn_id: t.turn_id}
 
-  response[:guess] = ""
-
+  content_type :json
   response.to_json
 end
