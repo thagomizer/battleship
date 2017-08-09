@@ -42,4 +42,33 @@ class ServerTest < MiniTest::Unit::TestCase
 
     assert_equal Game.last.id, data["game_id"]
   end
+
+  def test_turn
+    get "/new_game"
+
+    g = JSON.parse(last_response.body)["game_id"]
+    count = Turn.count
+
+    # Simulate first client turn
+    body = {}
+    body[:game_id] = g
+    body[:response] = {}
+    body[:guess] = { guess: "A7" }
+
+    post("/turn", body.to_json, { "CONTENT_TYPE" => "application/json" })
+
+    assert last_response.ok?
+
+    # Validate the response
+    data = JSON.parse(last_response.body)
+
+    assert_equal g, data["game_id"]
+    refute data["response"]["hit"]
+    refute data["response"]["sunk"]
+
+    refute data["guess"]["guess"].empty?
+
+    # Validate the database
+    assert_equal count + 1, Turn.count
+  end
 end

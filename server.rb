@@ -40,6 +40,36 @@ end
 #  response is the same format as the request params, both in json
 
 post '/turn' do
-  params = JSON.parse(request.body.read)
-  puts params
+  body = request.body.read
+  params = JSON.parse(body)
+
+  response = {}
+
+  g = Game.find( params["game_id"] )
+
+  turns = Turn.where(game_id: g.id)
+  last = turns.last
+
+  # Load in state from the previous turns and create a new client object.
+  if last
+    c = Marshal.load(last.state)
+  else
+    c = Client.new
+  end
+
+  # Process move, create a turn record for the client's turn
+  c.process_move params["guess"]["guess"]
+
+  # Figure out your response, create a turn record to record it
+
+
+  # Send response
+
+  response[:game_id] = g.id
+
+  response[:response] = ""
+
+  response[:guess] = ""
+
+  response.to_json
 end
