@@ -11,7 +11,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'sinatra'
+require "sinatra"
+require "sinatra/activerecord"
+require_relative "models/game"
+require_relative "models/turn"
+
 get '/' do
-  'Welcome to battleship'
+  erb :index
+end
+
+get '/new_game' do
+  g = Game.create!
+  content_type :json
+
+  { game_id: g.id }.to_json
+end
+
+
+## Takes a turn from the client, processes and
+#  responds with a guess of its own
+#
+#  params:
+#   { game_id: <id>,
+#     response: { hit: [true|false],
+#                 sunk: <ship name>},
+#     guess:    { guess: <A7 or B4> }}
+#
+#  response is the same format as the request params, both in json
+
+post '/turn' do
+  params = JSON.parse(request.body.read)
+  puts params
 end
