@@ -37,5 +37,9 @@ class ServerTest < MiniTest::Unit::TestCase
     assert last_response.ok?
 
     data = JSON.parse(last_response.body)
+
+    assert data["game_id"]
+
+    assert_equal Game.last.id, data["game_id"]
   end
 end
