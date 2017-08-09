@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ENV['RACK_ENV'] = 'test'
-require 'minitest/autorun'
-require 'rack/test'
+ENV["RACK_ENV"] = "test"
+require "minitest/autorun"
+require "rack/test"
 
-require File.expand_path '../../server.rb', __FILE__
+require File.expand_path "../../server.rb", __FILE__
 
 class ServerTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
@@ -26,13 +26,13 @@ class ServerTest < MiniTest::Unit::TestCase
   end
 
   def test_root
-    get '/'
+    get "/"
     assert last_response.ok?
     assert last_response.body.include? "Battleship API"
   end
 
   def test_new_game
-    get '/new_game'
+    get "/new_game"
 
     assert last_response.ok?
 
