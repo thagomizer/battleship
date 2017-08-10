@@ -66,6 +66,7 @@ post '/turn' do
 
   response[:response] = c.process_move params["guess"]["guess"]
   response[:response][:turn_id] = params["guess"]["turn_id"]
+  response[:response][:lost] = c.lost? 
 
   t = Turn.new
   t.game_id = g.id
@@ -82,7 +83,6 @@ post '/turn' do
   t.turn_id = params["guess"]["turn_id"] + 1
 
   # Send response
-
   response[:game_id] = g.id
 
   response[:guess] = { guess: guess, turn_id: t.turn_id}

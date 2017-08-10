@@ -15,7 +15,6 @@
 ENV["RACK_ENV"] = "test"
 require "minitest/autorun"
 require "rack/test"
-require "pp"
 
 require File.expand_path "../../server.rb", __FILE__
 
