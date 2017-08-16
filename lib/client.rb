@@ -17,9 +17,15 @@ class Client
   DIRECTIONS = [:up, :down, :left, :right]
   LETTERS = ('A'..'J').to_a
 
+FLEET = [[:battleship, 5],
+         [:cruiser,    4],
+         [:submarine,  3],
+         [:frigate,    3],
+         [:destroyer,  2]]
+
   attr_accessor :game_id, :their_board, :my_board, :fleet
 
-  def initialize game_id = "", fleet = []
+  def initialize game_id = "", fleet = FLEET
     self.game_id     = game_id
     self.fleet       = fleet.dup
     self.my_board    = Board.new
