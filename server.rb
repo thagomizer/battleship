@@ -37,6 +37,7 @@ end
 #  params:
 #   { game_id: <id>,
 #     response: { hit: [true|false],
+#                 lost: [true|false],
 #                 sunk: <ship name>,
 #                 turn_id: i },
 #     guess:    { guess: <A7 or B4>,
@@ -60,13 +61,13 @@ post '/turn' do
     c = Marshal.load(last.state)
   else
     c = Client.new
+    c.place_ships
   end
 
   # Process move, create a turn record for the client's turn
-
   response[:response] = c.process_move params["guess"]["guess"]
   response[:response][:turn_id] = params["guess"]["turn_id"]
-  response[:response][:lost] = c.lost? 
+  response[:response][:lost] = c.lost?
 
   t = Turn.new
   t.game_id = g.id
@@ -81,6 +82,7 @@ post '/turn' do
   t.game_id = g.id
   t.state = Marshal.dump(c)
   t.turn_id = params["guess"]["turn_id"] + 1
+  t.save!
 
   # Send response
   response[:game_id] = g.id
