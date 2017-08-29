@@ -22,6 +22,8 @@ GEM
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
+    rack-test (0.7.0)
+      rack (>= 1.0, < 3)
     rake (12.0.0)
     sinatra (2.0.0)
       mustermann (~> 1.0)
@@ -44,9 +46,10 @@ DEPENDENCIES
   activerecord
   minitest
   pg
+  rack-test
   rake
   sinatra
   sinatra-activerecord
 
 BUNDLED WITH
-   1.15.1
+   1.15.3
