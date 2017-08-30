@@ -57,10 +57,27 @@ class BattleshipClient
   # API Protocol
   # Do not change
   def new_game
+    uri = URI("#{SERVER_ADDRESS}/new_game")
+    response = Net::HTTP.get(uri)
 
+    game_id = JSON.parse(response)["game_id"]
   end
 
   def turn game_id, response_to_last_move, guess
+    @turn_id ||= 0
+    @turn_id += 1
+
+    request = {}
+
+    response_to_last_move[:turn_id] = @turn_id
+
+    request[:response] = response_to_last_move
+    request[:guess] = { guess: guess, turn_id = @turn_id += 1 }
+
+    uri = URI("#{SERVER_ADDRESS}/turn")
+    response = Net::HTTP.post(uri,
+                              request.to_json,
+                              "Content-Type" => "application/json")
 
   end
 
