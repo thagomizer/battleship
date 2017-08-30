@@ -23,17 +23,19 @@ This is a server for a client <-> server game of <a href="https://en.wikipedia.o
 
 <p>This Battleship game is played on a ten by ten grid. Grid cells are referenced by a letter and number pair. The board below has an X at D7.</p>
 
- 12345678910<br>
-A..........<br>
-B..........<br>
-C..........<br>            
-D......X...<br>
-E..........<br>
-F..........<br>
-G..........<br>
-H..........<br>
-I..........<br>
-J..........<br>            
+<pre>
+ 12345678910
+A..........
+B..........
+C..........            
+D......X...
+E..........
+F..........
+G..........
+H..........
+I..........
+J..........
+</pre>
 
 <p>      
 This game uses the following ships
@@ -51,7 +53,9 @@ There is one of each ship. Ships may be placed horizontally or vertically but no
 
 <p>
 The API is purposefully designed to be simple. Part of the challenge is implementing the logic to place ships, make guesses, and respond to guesses from your opponent. There is no validation that your ship placement is valid or that your responses are correct. </p>
-          
+
+<h2> The API </h2>
+
   <h3>get /new_game</h3>
 
   <p>Initializes a game and returns a game id that you must pass to subsequent calls.</p>
