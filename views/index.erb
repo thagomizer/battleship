@@ -13,14 +13,62 @@
 -->
 
 <html>
-<head>Battleship API</head>
+  <head>Battleship API</head>
 
-<body>
-  <dl>
-    <dt>get /new_game</dt>
-    <dd>Initializes a game and returns a game id that you must pass back in subsequent calls.</dd>
-    <dt>post /turn</td>
-    <dd>Submits a turn.</dd>
-  </dl>
+  <body>
+<p>
+This is a server for a client <-> server game of <a href="https://en.wikipedia.org/wiki/Battleship_(game)">BattleShip</a>. In this game you play against the server. </p>
+
+<p>The API is designed to be simple so that you can get a client working quickly. If you need a scaffold to get you started look <a href="TODO">here</a>.</p>
+
+<p>This Battleship game is played on a ten by ten grid. Grid cells are referenced by a letter and number pair. The board below has an X at D7.</p>
+
+ 12345678910<br>
+A..........<br>
+B..........<br>
+C..........<br>            
+D......X...<br>
+E..........<br>
+F..........<br>
+G..........<br>
+H..........<br>
+I..........<br>
+J..........<br>            
+
+<p>      
+This game uses the following ships
+<ul>
+  <li>Battleship - Length 5</li>
+  <li>Cruiser - Length 4</li>
+  <li>Submarine - Length 3</li>
+  <li>Frigate - Length 3</li>
+  <li>Destroyer - Length 2</li>
+</ul>
+</p>
+
+<p>
+There is one of each ship. Ships may be placed horizontally or vertically but not diagonally. Ships cannot overlap other ships. Ships must be contiguous and the board does not "wrap".</p>
+
+<p>
+The API is purposefully designed to be simple. Part of the challenge is implementing the logic to place ships, make guesses, and respond to guesses from your opponent. There is no validation that your ship placement is valid or that your responses are correct. </p>
+          
+  <h3>get /new_game</h3>
+
+  <p>Initializes a game and returns a game id that you must pass to subsequent calls.</p>
+  <p>Request body: None</p>
+  <p>Response: {game_id: ID}</p>
+
+  <h3>post /turn</h3>
+  <p>Submits a turn</p>
+
+  <p>Request body:
+    { game_id: <id>,
+      response: { hit: [true|false],
+                  sunk: <ship name>,
+                  turn_id: i },
+      guess:    { guess: <A7, B4, E1, etc>,
+                  turn_id: i + 1 }
+    }</p>
+  <p>Response: same as request</p>
 </body>
 </html>
