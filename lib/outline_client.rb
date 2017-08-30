@@ -20,7 +20,7 @@ c = Client.new
 c.place_ships
 
 # Get a Game ID
-uri = URI("http://localhost:4567/new_game")
+uri = URI("https://battleship-176302.appspot.com/new_game")
 
 response = Net::HTTP.get(uri)
 
@@ -56,7 +56,7 @@ loop do
   pp request
 
   # Send Move
-  uri = URI("http://localhost:4567/turn")
+  uri = URI("https://battleship-176302.appspot.com/turn")
 
   # exit if c.lost?
 
