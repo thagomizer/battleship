@@ -65,14 +65,17 @@ The API is purposefully designed to be simple. Part of the challenge is implemen
   <h3>post /turn</h3>
   <p>Submits a turn</p>
 
-  <p>Request body:
+<p>Request body:
+  <pre>
     { game_id: <id>,
       response: { hit: [true|false],
                   sunk: <ship name>,
                   turn_id: i },
-      guess:    { guess: <A7, B4, E1, etc>,
+      guess:    { guess: "A7",
                   turn_id: i + 1 }
-    }</p>
+        }
+  </pre>
+</p>
   <p>Response: same as request</p>
 </body>
 </html>
