@@ -11,6 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require "stackdriver"
 require "sinatra"
 require "sinatra/activerecord"
 require_relative "models/game"

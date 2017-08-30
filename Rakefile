@@ -11,6 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'sinatra/activerecord'
-require 'sinatra/activerecord/rake'
+require "appengine"
+require "appengine/tasks"
+require "sinatra/activerecord"
+require "sinatra/activerecord/rake"
 # require './app'
