@@ -20,8 +20,8 @@ default: &default
 production:
   <<: *default
   database: "battleship_production"
-  username: "rails"
-  password: "rails"
+  username: "sinatra"
+  password: "password12345"
   host:   "104.199.118.55"
   timeout: 5000
   

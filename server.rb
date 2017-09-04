@@ -39,10 +39,8 @@ end
 #   { game_id: <id>,
 #     response: { hit: [true|false],
 #                 lost: [true|false],
-#                 sunk: <ship name>,
-#                 turn_id: i },
-#     guess:    { guess: <A7 or B4>,
-#                 turn_id: i + 1}}
+#                 sunk: <ship name> }
+#     guess:    { guess: <A7 or B4> }
 #
 #  response is the same format as the request params, both in json
 
@@ -67,14 +65,12 @@ post '/turn' do
 
   # Process move, create a turn record for the client's turn
   response[:response] = c.process_move params["guess"]["guess"]
-  response[:response][:turn_id] = params["guess"]["turn_id"]
   response[:response][:lost] = c.lost?
 
   t = Turn.new
   t.game_id = g.id
   t.state = Marshal.dump(c)
   t.body = params
-  t.turn_id = params["guess"]["turn_id"]
   t.save!
 
   # Figure out your response, create a turn record to record it
@@ -82,13 +78,12 @@ post '/turn' do
   t = Turn.new
   t.game_id = g.id
   t.state = Marshal.dump(c)
-  t.turn_id = params["guess"]["turn_id"] + 1
   t.save!
 
   # Send response
   response[:game_id] = g.id
 
-  response[:guess] = { guess: guess, turn_id: t.turn_id}
+  response[:guess] = { guess: guess }
 
   content_type :json
   response.to_json

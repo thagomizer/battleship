@@ -10,7 +10,7 @@ class BattleshipClient
     game_id = new_game
 
     g = guess
-    server_response = turn game_id, {hit: false, sunk: nil}, g
+    server_response = turn(game_id, {hit: false, sunk: nil}, g)
 
     loop do
       opponent_move = server_response["guess"]["guess"]
@@ -18,7 +18,7 @@ class BattleshipClient
       response_to_opponent = respond_to_move opponent_move
       g = guess
 
-      server_response = turn game_id, response_to_opponent, g
+      server_response = turn(game_id, response_to_opponent, g)
     end
   end
 
@@ -64,15 +64,10 @@ class BattleshipClient
   end
 
   def turn game_id, response_to_last_move, guess
-    @turn_id ||= 0
-    @turn_id += 1
-
     request = {}
 
-    response_to_last_move[:turn_id] = @turn_id
-
     request[:response] = response_to_last_move
-    request[:guess] = { guess: guess, turn_id = @turn_id += 1 }
+    request[:guess] = { guess: guess }
 
     uri = URI("#{SERVER_ADDRESS}/turn")
     response = Net::HTTP.post(uri,

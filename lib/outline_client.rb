@@ -26,7 +26,6 @@ response = Net::HTTP.get(uri)
 
 game_id = JSON.parse(response)["game_id"]
 
-turn_id = 1
 opponent_move = {}
 
 # Moves!
@@ -42,15 +41,10 @@ loop do
     results = c.process_move opponent_move["guess"]["guess"]
 
     request[:response] = results
-    request[:response][:turn_id] = turn_id
     request[:response][:lost] = c.lost?
-    turn_id += 1
   end
 
-  request[:guess] = {turn_id: turn_id,
-                     guess: c.guess}
-
-  turn_id += 1
+  request[:guess] = { guess: c.guess }
 
   puts "Client"
   pp request
