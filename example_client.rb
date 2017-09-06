@@ -1,3 +1,8 @@
+require "net/http"
+require "uri"
+require "json"
+
+
 SERVER_ADDRESS = "https://battleship-176302.appspot.com/"
 
 class BattleshipClient
@@ -66,6 +71,7 @@ class BattleshipClient
   def turn game_id, response_to_last_move, guess
     request = {}
 
+    request[:game_id] = game_id
     request[:response] = response_to_last_move
     request[:guess] = { guess: guess }
 
