@@ -63,7 +63,10 @@ The API is purposefully designed to be simple. Part of the challenge is implemen
   <p>Response: {game_id: ID}</p>
 
   <h3>post /turn</h3>
-  <p>Submits a turn</p>
+<p>Submits a turn. </p>
+<p>Hit is true if the opponent's hit one of your ships.</p>
+<p>Sunk is true if the opponent has hit all the cells a ship occupies</p>
+<p>Lost is true if all of your ships are now sunk.</p>
 
 <p>Request body:
   <pre>
@@ -78,3 +81,48 @@ The API is purposefully designed to be simple. Part of the challenge is implemen
   <p>Response: same as request</p>
 </body>
 </html>
+
+
+<h2> Example Interactions </h2>
+
+<p>Request to /game_id with empty body.</p>
+<p>Response from /game_id</p>
+<pre> {game_id: 5}</pre>
+
+<p>Request to /turn</p>
+<pre>
+  { game_id: 5,
+    response: { },
+    guess:    { guess: "A7" }
+  }
+</pre>      
+
+<p>Response from /turn</p>
+<pre>
+  { game_id: 5,
+    response: { hit: true,
+                sunk: "",
+                lost: false },
+    guess:    { guess: "C5" }
+  }
+</pre>
+
+<p>Request to /turn from client</p>
+<pre>
+  { game_id: 5,
+    response: { hit: false,
+                sunk: "",
+                lost: false },
+    guess:    { guess: "A8" }
+  }
+</pre>
+  
+<p>Response from /turn</p>
+<pre>
+ { game_id: 5,
+    response: { hit: true,
+                sunk: "Destroyer",
+                lost: false },
+    guess:    { guess: "F2" }
+  }
+</pre>

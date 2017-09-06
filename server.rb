@@ -48,13 +48,13 @@ post '/turn' do
   body = request.body.read
   params = JSON.parse(body)
 
-  errors = errors_on_turn params
+  # errors = errors_on_turn params
 
-  unless errors.empty?
-    status 400
-    content_type :json
-    return errors.to_json
-  end
+  # unless errors.empty?
+  #   status 400
+  #   content_type :json
+  #   return errors.to_json
+  # end
 
   response = {}
 
