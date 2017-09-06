@@ -15,6 +15,7 @@
 ENV["RACK_ENV"] = "test"
 require "minitest/autorun"
 require "rack/test"
+require "pp"
 
 require File.expand_path "../../server.rb", __FILE__
 
@@ -67,8 +68,13 @@ class ServerTest < MiniTest::Unit::TestCase
     refute data["response"]["sunk"]
 
     refute data["guess"]["guess"].empty?
+  end
 
-    # # Validate the database
-    # assert_equal count + 1, Turn.count
+  def test_turn_validation
+    body = {}
+
+    post("/turn", body.to_json, { "CONTENT_TYPE" => "application/json" })
+
+    assert_equal 400, last_response.status
   end
 end

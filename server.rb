@@ -48,6 +48,14 @@ post '/turn' do
   body = request.body.read
   params = JSON.parse(body)
 
+  errors = errors_on_turn params
+
+  unless errors.empty?
+    status 400
+    content_type :json
+    return errors.to_json
+  end
+
   response = {}
 
   g = Game.find( params["game_id"] )
@@ -87,4 +95,50 @@ post '/turn' do
 
   content_type :json
   response.to_json
+end
+
+def errors_on_turn body
+  errors = []
+
+  # Has a game_id
+  unless body["game_id"]
+    errors << "Turn must include game_id"
+  end
+
+  # Has a response unless it is the first move
+  if body["response"]
+
+    unless body["response"].has_key?("hit")
+      errors << "Turn[:response] requires hit to be true or false"
+    end
+
+    unless body["response"].has_key?("lost")
+      errors << "Turn[:response] requires lost to be true or false"
+    end
+  else
+    errors << "Turn must include response"
+  end
+
+  # Has a guess
+  if body["guess"]
+    g = body["guess"]["guess"]
+
+    unless g
+      errors << "Turn must inclued your next guess"
+    end
+
+    m = /([ABCDEFGHIJ])(\d?)/.match g
+
+    if m
+      unless m.captures[1].to_i.between?(1, 10)
+        errors << "Guesses can only use 1 - 10"
+      end
+    else
+      errors << "Guesses can only use A - J and 1 - 10"
+    end
+  else
+    errors << "Turn must include body"
+  end
+
+  return errors
 end
