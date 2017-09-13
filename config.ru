@@ -11,27 +11,33 @@
 # It's strongly recommended that you check this file into your version control system.
 
 require './server'
-run Sinatra::Application
-
 require "google/cloud/logging"
 require "google/cloud/debugger"
 require "google/cloud/error_reporting"
 require "google/cloud/trace"
+require 'sinatra'
+configure { set :server, :puma }
 
+Google::Cloud.configure do |config|
+  config.project_id = "stackdriver-hydridy-cloud-demo"
+  config.keyfile = "StackdriverHybridDemo.json"
+  
+  config.debugger.service_name = "battleship"
+  config.debugger.service_version = "v1"
+  config.use_debugger = true
+  
+  config.error_reporting.service_name = "battleship"
+  config.error_reporting.service_version = "v1"
+  config.use_error_reporting = true
 
-logging = Google::Cloud::Logging.new
-resource = Google::Cloud::Logging::Middleware.build_monitored_resource
-logger = logging.logger "battleship-log", resource
-use Google::Cloud::Logging::Middleware, logger: logger
+  config.logging.project_id = "stackdriver-hydridy-cloud-demo"
+  config.logging.log_name = "battleship-log"
+  config.use_logging = true
 
-require "google/cloud/debugger"
-use Google::Cloud::Debugger::Middleware project: "battleship-176302",
-                                        keyfile: "BATTLESHIP-dd853c51f7f9.json",
-                                        service_name: "battleship",
-                                        service_version: "v1"
+  config.use_trace = true
+end
 
 use Google::Cloud::Debugger::Middleware
-
 use Google::Cloud::ErrorReporting::Middleware
-
+use Google::Cloud::Logging::Middleware
 use Google::Cloud::Trace::Middleware
