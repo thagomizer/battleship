@@ -78,10 +78,15 @@ class Board
   end
 
   def marshal_load data
-    @board  = Hash.new { |h, k| h[k] = [] }
-
-    data.each do |location, value|
-      @board[location] = value
-    end
+    @board = Hash[data]
+    @board.default_proc = proc { |h, k| h[k] = [] }
   end
+
+  # def marshal_load data
+  #   @board  = Hash.new { |h, k| h[k] = [] }
+
+  #   data.each do |location, value|
+  #     @board[location] = value
+  #   end
+  # end
 end

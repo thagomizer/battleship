@@ -25,8 +25,6 @@ end
 get '/new_game' do
   g = Game.create!
 
-  # Create a client, place_ships, and create turn 0
-
   content_type :json
   { game_id: g.id }.to_json
 end
@@ -88,10 +86,10 @@ post '/turn' do
   t.state = Marshal.dump(c)
   t.save!
 
+  response[:guess] = { guess: guess }
+
   # Send response
   response[:game_id] = g.id
-
-  response[:guess] = { guess: guess }
 
   content_type :json
   response.to_json

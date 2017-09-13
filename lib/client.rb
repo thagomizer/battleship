@@ -40,7 +40,7 @@ FLEET = [[:battleship, 5],
     loop do
       dir = DIRECTIONS.sample
       letter = LETTERS.sample
-      number = Random.rand(10)
+      number = Random.rand(10) + 1
 
       locations = []
 

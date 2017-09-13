@@ -12,3 +12,26 @@
 
 require './server'
 run Sinatra::Application
+
+require "google/cloud/logging"
+require "google/cloud/debugger"
+require "google/cloud/error_reporting"
+require "google/cloud/trace"
+
+
+logging = Google::Cloud::Logging.new
+resource = Google::Cloud::Logging::Middleware.build_monitored_resource
+logger = logging.logger "battleship-log", resource
+use Google::Cloud::Logging::Middleware, logger: logger
+
+require "google/cloud/debugger"
+use Google::Cloud::Debugger::Middleware project: "battleship-176302",
+                                        keyfile: "BATTLESHIP-dd853c51f7f9.json",
+                                        service_name: "battleship",
+                                        service_version: "v1"
+
+use Google::Cloud::Debugger::Middleware
+
+use Google::Cloud::ErrorReporting::Middleware
+
+use Google::Cloud::Trace::Middleware

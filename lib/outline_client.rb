@@ -16,11 +16,13 @@ require_relative "client.rb"
 require "json"
 require "pp"
 
+SERVER = "http://localhost:4567"
+
 c = Client.new
 c.place_ships
 
 # Get a Game ID
-uri = URI("https://battleship-176302.appspot.com/new_game")
+uri = URI("#{SERVER}/new_game")
 
 response = Net::HTTP.get(uri)
 
@@ -50,7 +52,7 @@ loop do
   pp request
 
   # Send Move
-  uri = URI("https://battleship-176302.appspot.com/turn")
+  uri = URI("#{SERVER}/turn")
 
   # exit if c.lost?
 
