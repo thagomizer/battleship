@@ -15,7 +15,10 @@ require "google/cloud/logging"
 require "google/cloud/debugger"
 require "google/cloud/error_reporting"
 require "google/cloud/trace"
+
 require 'sinatra'
+
+run Sinatra::Application.run!
 
 Google::Cloud.configure do |config|
   config.project_id = "stackdriver-hydridy-cloud-demo"
@@ -41,5 +44,4 @@ use Google::Cloud::ErrorReporting::Middleware
 use Google::Cloud::Logging::Middleware
 use Google::Cloud::Trace::Middleware
 
-run Sinatra::Application.run!
 
