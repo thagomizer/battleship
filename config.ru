@@ -16,27 +16,18 @@ require "google/cloud/debugger"
 require "google/cloud/error_reporting"
 require "google/cloud/trace"
 
-require 'sinatra'
-
-run Sinatra::Application.run!
-
 Google::Cloud.configure do |config|
   config.project_id = "stackdriver-hydridy-cloud-demo"
   config.keyfile = "StackdriverHybridDemo.json"
   
   config.debugger.service_name = "battleship"
   config.debugger.service_version = "v1"
-  config.use_debugger = true
   
   config.error_reporting.service_name = "battleship"
   config.error_reporting.service_version = "v1"
-  config.use_error_reporting = true
 
   config.logging.project_id = "stackdriver-hydridy-cloud-demo"
   config.logging.log_name = "battleship-log"
-  config.use_logging = true
-
-  config.use_trace = true
 end
 
 use Google::Cloud::Debugger::Middleware
@@ -44,4 +35,7 @@ use Google::Cloud::ErrorReporting::Middleware
 use Google::Cloud::Logging::Middleware
 use Google::Cloud::Trace::Middleware
 
+require 'sinatra'
+
+run Sinatra::Application.run!
 
