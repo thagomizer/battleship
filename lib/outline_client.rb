@@ -16,7 +16,7 @@ require_relative "client.rb"
 require "json"
 require "pp"
 
-SERVER = "http://localhost:4567"
+SERVER = "http://localhost:3000"
 
 c = Client.new
 c.place_ships
